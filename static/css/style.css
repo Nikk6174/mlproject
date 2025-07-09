@@ -1,0 +1,116 @@
+/* Base reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0a0a0a;
+  color: #eee;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+}
+
+/* Neon text animations */
+.neon-text {
+  font-size: 4rem;
+  text-align: center;
+  margin-top: 20vh;
+  color: #39ff14;
+  text-shadow:
+    0 0 5px #39ff14,
+    0 0 10px #39ff14,
+    0 0 20px #39ff14,
+    0 0 40px #0fa,
+    0 0 80px #0fa;
+  animation: flicker 1.5s infinite alternate;
+}
+.subtext {
+  text-align: center;
+  margin: 1rem auto 2rem;
+  color: #aaa;
+  max-width: 600px;
+  animation: fadeIn 2s ease-in;
+}
+
+/* Buttons */
+.btn-neon, .btn-neon-sm {
+  display: inline-block;
+  padding: 0.8rem 2rem;
+  margin: 0 auto;
+  border: 2px solid #39ff14;
+  color: #39ff14;
+  text-decoration: none;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-neon:hover {
+  color: #0a0a0a;
+  background: #39ff14;
+  box-shadow: 0 0 10px #39ff14, 0 0 20px #39ff14;
+}
+.btn-neon-sm { font-size: 1rem; padding: 0.6rem 1.6rem; }
+
+/* Hero container */
+.hero { text-align: center; padding: 0 1rem; }
+
+/* Form & panels */
+.container { max-width: 500px; margin: 5vh auto; padding: 1rem; }
+.form-panel {
+  background: #121212;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #111;
+}
+.field { margin-bottom: 1.2rem; }
+.field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+.field input,
+.field select {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: #1e1e1e;
+  color: #eee;
+}
+.result-panel {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: #1b1b1b;
+  border-left: 4px solid #39ff14;
+}
+.result { font-size: 2rem; color: #39ff14; }
+
+/* Back link */
+.back-link {
+  display: inline-block;
+  margin-top: 2rem;
+  color: #888;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.back-link:hover { color: #39ff14; }
+
+/* Animations */
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow:
+      0 0 5px #39ff14,
+      0 0 10px #39ff14,
+      0 0 20px #39ff14,
+      0 0 40px #0fa,
+      0 0 80px #0fa;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+  }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

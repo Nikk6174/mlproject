@@ -1,1 +1,51 @@
-<h1>Welcome to the home page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome | ML Predictor</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#0a0a0a; color:#eee;
+      font-family:'Segoe UI',sans-serif;
+      display:flex; align-items:center; justify-content:center;
+      height:100vh; text-align:center;
+    }
+    h1 {
+      font-size:4rem; color:#39ff14;
+      text-shadow:0 0 5px #39ff14,0 0 10px #39ff14,0 0 20px #39ff14;
+      animation:flicker 1.5s infinite alternate;
+    }
+    p {
+      color:#aaa; margin:1rem auto 2rem; max-width:600px;
+      animation:fadeIn 2s ease-in;
+    }
+    .btn {
+      padding:1rem 2rem; font-size:1.1rem; font-weight:bold;
+      color:#39ff14; border:2px solid #39ff14; text-transform:uppercase;
+      text-decoration:none; transition:.3s; position:relative;
+    }
+    .btn:hover {
+      background:#39ff14; color:#0a0a0a;
+      box-shadow:0 0 10px #39ff14,0 0 20px #39ff14;
+      transform:scale(1.05);
+    }
+    @keyframes flicker {
+      0%,19%,21%,23%,25%,54%,56%,100% { text-shadow:0 0 5px #39ff14,0 0 10px #39ff14,0 0 20px #39ff14; }
+      20%,24%,55% { text-shadow:none; }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <h1>Unlock Your Student’s Potential</h1>
+    <p>Predict exam performance in seconds with our AI‑powered tool.</p>
+    <a href="{{ url_for('predict_datapoint') }}" class="btn">Get Started →</a>
+  </div>
+</body>
+</html>

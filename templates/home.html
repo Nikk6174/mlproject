@@ -1,111 +1,205 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Make a Prediction</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#0a0a0a; color:#eee;
+      font-family:'Segoe UI',sans-serif;
+      padding:2rem;
+      position: relative;
+    }
+    body.modal-open {
+      overflow: hidden;
+    }
+    body.modal-open .container {
+      filter: blur(6px);
+    }
+    .container {
+      max-width:500px; margin:0 auto;
+      background:#121212; padding:2rem;
+      border-radius:8px; box-shadow:0 0 10px #111;
+      transition: filter .3s ease;
+    }
+    h2 {
+      text-align:center; margin-bottom:1.5rem;
+      color:#39ff14; text-shadow:0 0 5px #39ff14;
+      animation:fadeIn 1.5s ease-in;
+    }
+    .field { margin-bottom:1rem; }
+    label { display:block; margin-bottom:.5rem; font-weight:600; }
+    select, input {
+      width:100%; padding:.6rem;
+      border:1px solid #333; border-radius:4px;
+      background:#1e1e1e; color:#eee;
+    }
+    .btn {
+      display:block; width:100%;
+      padding:.8rem; margin-top:1rem;
+      background:transparent; color:#39ff14;
+      border:2px solid #39ff14; text-transform:uppercase;
+      font-weight:bold; cursor:pointer; transition:.3s;
+    }
+    .btn:hover {
+      background:#39ff14; color:#0a0a0a;
+      box-shadow:0 0 10px #39ff14,0 0 20px #39ff14;
+      transform:scale(1.02);
+    }
+    .back {
+      display:block; text-align:center; margin-top:2rem;
+      color:#888; text-decoration:none; transition:.2s;
+    }
+    .back:hover { color:#39ff14; }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* Modal overlay */
+    .modal {
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.8); display:flex;
+      align-items:center; justify-content:center;
+      visibility:hidden; opacity:0;
+      transition:opacity .3s ease, visibility .3s;
+      z-index:1000;
+    }
+    .modal.show {
+      visibility:visible; opacity:1;
+    }
+    /* PLAIN_MODAL: slightly bigger and no neon */
+    .modal-content {
+      background:#1f1f1f; 
+      padding:3rem;               /* increased padding */
+      border-radius:8px;
+      text-align:center; 
+      max-width:400px;            /* a bit wider */
+      width: 90%;
+      box-shadow:0 0 10px rgba(0, 0, 0, 0.5); /* subtle shadow */
+    }
+    .modal-content h3 {
+      margin-bottom:1rem; 
+      color:#eee;                 /* normal color */
+      text-shadow:none;           /* remove glow */
+      font-size:1.25rem;
+    }
+    .modal-close {
+      display:inline-block; margin-top:1.5rem;
+      padding:.5rem 1.5rem; 
+      background:#333; 
+      border:none; 
+      color:#eee;
+      cursor:pointer; text-transform:uppercase;
+      transition:.2s;
+      border-radius:4px;
+    }
+    .modal-close:hover {
+      background:#444;
+    }
+  </style>
+</head>
 <body>
-    <div class="login">
-       <h1>Student Exam Performance Indicator</h1>
-   
-       <form action="{{ url_for('predict_datapoint')}}" method="post">
-        <h1>
-            <legend>Student Exam Performance Prediction</legend>
-        </h1>
-        <div class="mb-3">
-            <label class="form-label">Gender</label>
-            <select class="form-control" name="gender" placeholder="Enter you Gender" required>
-                <option class="placeholder" selected disabled value="">Select your Gender</option>
-                <option value="male">
-                    Male
-                </option>
-                <option value="female">
-                    Female
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Race or Ethnicity</label>
-            <select class="form-control" name="ethnicity" placeholder="Enter you ethnicity" required>
-                <option class="placeholder" selected disabled value="">Select Ethnicity</option>
-                <option value="group A">
-                    Group A
-                </option>
-                <option value="group B">
-                    Group B
-                </option>
-                <option value="group C">
-                    Group C
-                </option>
-                <option value="group D">
-                    Group D
-                </option>
-                <option value="group E">
-                    Group E
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Parental Level of Education</label>
-            <select class="form-control" name="parental_level_of_education"
-                placeholder="Enter you Parent Education" required>
-                <option class="placeholder" selected disabled value="">Select Parent Education</option>
-                <option value="associate's degree">
-                    associate's degree
-                </option>
-                <option value="bachelor's degree">
-                    bachelor's degree
-                </option>
-                <option value="high school">
-                    high school
-                </option>
-                <option value="master's degree">
-                    master's degree
-                </option>
-                <option value="some college">
-                    some college
-                </option>
-                <option value="some high school">
-                    some high school
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Lunch Type</label>
-            <select class="form-control" name="lunch" placeholder="Enter you Lunch" required>
-                <option class="placeholder" selected disabled value="">Select Lunch Type</option>
-                <option value="free/reduced">
-                    free/reduced
-                </option>
-                <option value="standard">
-                    standard
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Test preparation Course</label>
-            <select class="form-control" name="test_preparation_course" placeholder="Enter you Course"
-                required>
-                <option class="placeholder" selected disabled value="">Select Test_course</option>
-                <option value="none">
-                    None
-                </option>
-                <option value="completed">
-                    Completed
-                </option>
-            </select>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Writing Score out of 100</label>
-            <input class="form-control" type="number" name="reading_score"
-                placeholder="Enter your Reading score" min='0' max='100' />
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Reading Score out of 100</label>
-            <input class="form-control" type="number" name="writing_score"
-                placeholder="Enter your Reading Score" min='0' max='100' />
-        </div>
-        <div class="mb-3">
-            <input class="btn btn-primary" type="submit" value="Predict your Maths Score" required />
-        </div>
+  <div class="container">
+    <h2>Student Exam Score Predictor</h2>
+    <form id="predict-form" method="post" action="{{ url_for('predict_datapoint') }}">
+      <!-- Gender -->
+      <div class="field">
+        <label>Gender</label>
+        <select name="gender" required>
+          <option value="male"   {% if request.form.gender=='male'   %}selected{% endif %}>Male</option>
+          <option value="female" {% if request.form.gender=='female' %}selected{% endif %}>Female</option>
+        </select>
+      </div>
+      <!-- Race/Ethnicity -->
+      <div class="field">
+        <label>Race/Ethnicity</label>
+        <select name="ethnicity" required>
+          {% for grp in ['group A','group B','group C','group D','group E'] %}
+            <option value="{{grp}}" {% if request.form.ethnicity==grp %}selected{% endif %}>{{grp.title()}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Parental Level of Education -->
+      <div class="field">
+        <label>Parental Level of Education</label>
+        <select name="parental_level_of_education" required>
+          {% for lvl in ["some high school","high school","some college","associate's degree","bachelor's degree","master's degree"] %}
+            <option value="{{lvl}}" {% if request.form.parental_level_of_education==lvl %}selected{% endif %}>{{lvl.title()}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <!-- Lunch -->
+      <div class="field">
+        <label>Lunch</label>
+        <select name="lunch" required>
+          <option value="standard"     {% if request.form.lunch=='standard'     %}selected{% endif %}>Standard</option>
+          <option value="free/reduced" {% if request.form.lunch=='free/reduced' %}selected{% endif %}>Free/Reduced</option>
+        </select>
+      </div>
+      <!-- Test Preparation Course -->
+      <div class="field">
+        <label>Test Preparation Course</label>
+        <select name="test_preparation_course" required>
+          <option value="none"      {% if request.form.test_preparation_course=='none'      %}selected{% endif %}>None</option>
+          <option value="completed" {% if request.form.test_preparation_course=='completed' %}selected{% endif %}>Completed</option>
+        </select>
+      </div>
+      <!-- Reading Score -->
+      <div class="field">
+        <label>Reading Score</label>
+        <input type="number" name="reading_score" min="0" max="100"
+               value="{{ request.form.reading_score or '' }}" required/>
+      </div>
+      <!-- Writing Score -->
+      <div class="field">
+        <label>Writing Score</label>
+        <input type="number" name="writing_score" min="0" max="100"
+               value="{{ request.form.writing_score or '' }}" required/>
+      </div>
+      <button type="submit" class="btn">Predict</button>
     </form>
-    <h2>
-       THE  prediction is {{results}}
-    </h2>
-   <body>
+
+    <a href="{{ url_for('index') }}" class="back">← Back to Home</a>
+  </div>
+
+  <!-- Modal Popup -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h3 id="modal-message">Your predicted score is</h3>
+      <button id="modal-close" class="modal-close">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('predict-form');
+    const modal = document.getElementById('modal');
+    const modalMessage = document.getElementById('modal-message');
+    const closeBtn = document.getElementById('modal-close');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const data = new FormData(form);
+      const resp = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body: data
+      });
+      const snippet = await resp.text();
+      const temp = document.createElement('div');
+      temp.innerHTML = snippet;
+      const scoreText = temp.querySelector('.result').innerText;
+      modalMessage.innerText = `Your predicted score is ${scoreText}`;
+      document.body.classList.add('modal-open');
+      modal.classList.add('show');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      modal.classList.remove('show');
+      document.body.classList.remove('modal-open');
+    });
+  </script>
+</body>
 </html>
